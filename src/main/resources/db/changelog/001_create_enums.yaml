@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-enums
+      author: system
+      context: dev
+      changes:
+        - sql:
+            sql: |
+              CREATE DOMAIN QUESTION_TYPE AS VARCHAR(50) CHECK (VALUE IN ('yes_no', 'multiple_choice', 'number', 'text'));
+        - sql:
+            sql: |
+              CREATE DOMAIN USER_ROLE AS VARCHAR(50) CHECK (VALUE IN ('creator', 'player', 'admin'));
+        - sql:
+            sql: |
+              CREATE DOMAIN PARTICIPANT_STATUS AS VARCHAR(50) CHECK (VALUE IN ('joined', 'in_progress', 'completed', 'abandoned'));

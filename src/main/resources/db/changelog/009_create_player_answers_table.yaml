@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-create-player-answers-table
+      author: system
+      context: dev
+      changes:
+        - createTable:
+            tableName: player_answers
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quiz_participant_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_player_answers_quiz_participant_id
+                    references: quiz_participants(id)
+              - column:
+                  name: question_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_player_answers_question_id
+                    references: questions(id)
+              - column:
+                  name: answer_value
+                  type: VARCHAR(1000)
+              - column:
+                  name: is_correct
+                  type: BOOLEAN
+              - column:
+                  name: points_earned
+                  type: INTEGER
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: answered_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time_taken_seconds
+                  type: INTEGER
+              - column:
+                  name: version
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_player_answers_quiz_participant_id
+            tableName: player_answers
+            columns:
+              - column:
+                  name: quiz_participant_id
+        - createIndex:
+            indexName: idx_player_answers_question_id
+            tableName: player_answers
+            columns:
+              - column:
+                  name: question_id
+        - addUniqueConstraint:
+            columnNames: quiz_participant_id,question_id
+            constraintName: uk_player_answers_unique
+            tableName: player_answers

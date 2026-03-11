@@ -1,0 +1,84 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004-create-questions-table
+      author: system
+      context: dev
+      changes:
+        - createTable:
+            tableName: questions
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quiz_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_questions_quiz_id
+                    references: quizzes(id)
+              - column:
+                  name: question_text
+                  type: VARCHAR(4000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: question_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: points
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_index
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_trivia
+                  type: BOOLEAN
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: trivia_time_seconds
+                  type: INTEGER
+              - column:
+                  name: version
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_questions_quiz_id
+            tableName: questions
+            columns:
+              - column:
+                  name: quiz_id
+        - createIndex:
+            indexName: idx_questions_order_index
+            tableName: questions
+            columns:
+              - column:
+                  name: quiz_id
+              - column:
+                  name: order_index

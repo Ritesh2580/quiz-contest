@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-create-quiz-participants-table
+      author: system
+      context: dev
+      changes:
+        - createTable:
+            tableName: quiz_participants
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quiz_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_quiz_participants_quiz_id
+                    references: quizzes(id)
+              - column:
+                  name: player_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_quiz_participants_player_id
+                    references: users(id)
+              - column:
+                  name: joined_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: started_at
+                  type: TIMESTAMP
+              - column:
+                  name: completed_at
+                  type: TIMESTAMP
+              - column:
+                  name: total_score
+                  type: INTEGER
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(50)
+                  defaultValue: 'joined'
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_quiz_participants_quiz_id
+            tableName: quiz_participants
+            columns:
+              - column:
+                  name: quiz_id
+        - createIndex:
+            indexName: idx_quiz_participants_player_id
+            tableName: quiz_participants
+            columns:
+              - column:
+                  name: player_id
+        - addUniqueConstraint:
+            columnNames: quiz_id,player_id
+            constraintName: uk_quiz_participants_unique
+            tableName: quiz_participants

@@ -1,0 +1,112 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-quiz-images-table
+      author: system
+      context: dev
+      changes:
+        - createTable:
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quiz_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_quiz_images_quiz_id
+                    references: quizzes(id)
+              - column:
+                  name: image_data
+                  type: BLOB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_mime_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_name
+                  type: VARCHAR(255)
+              - column:
+                  name: image_alt_text
+                  type: VARCHAR(500)
+              - column:
+                  name: image_size_bytes
+                  type: INTEGER
+              - column:
+                  name: image_width
+                  type: INTEGER
+              - column:
+                  name: image_height
+                  type: INTEGER
+              - column:
+                  name: image_index
+                  type: SMALLINT
+                  defaultValue: 0
+              - column:
+                  name: image_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: linked_question_id
+                  type: UUID
+              - column:
+                  name: linked_option_id
+                  type: UUID
+              - column:
+                  name: version
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_quiz_images_quiz_id
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: quiz_id
+        - createIndex:
+            indexName: idx_quiz_images_question_id
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: linked_question_id
+        - createIndex:
+            indexName: idx_quiz_images_option_id
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: linked_option_id
+        - createIndex:
+            indexName: idx_quiz_images_type
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: image_type
+        - createIndex:
+            indexName: idx_quiz_images_index
+            tableName: quiz_images
+            columns:
+              - column:
+                  name: linked_question_id
+              - column:
+                  name: image_index

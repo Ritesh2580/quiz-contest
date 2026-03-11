@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-create-quiz-leaderboard-table
+      author: system
+      context: dev
+      changes:
+        - createTable:
+            tableName: quiz_leaderboard
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quiz_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_quiz_leaderboard_quiz_id
+                    references: quizzes(id)
+              - column:
+                  name: player_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_quiz_leaderboard_player_id
+                    references: users(id)
+              - column:
+                  name: rank
+                  type: INTEGER
+              - column:
+                  name: total_score
+                  type: INTEGER
+              - column:
+                  name: total_questions_correct
+                  type: INTEGER
+              - column:
+                  name: total_questions_attempted
+                  type: INTEGER
+              - column:
+                  name: completion_time_minutes
+                  type: INTEGER
+              - column:
+                  name: version
+                  type: INTEGER
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_quiz_leaderboard_quiz_id
+            tableName: quiz_leaderboard
+            columns:
+              - column:
+                  name: quiz_id
+        - addUniqueConstraint:
+            columnNames: quiz_id,player_id
+            constraintName: uk_quiz_leaderboard_unique
+            tableName: quiz_leaderboard
