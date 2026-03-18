@@ -19,3 +19,5 @@ databaseChangeLog:
       file: db/changelog/009_create_player_answers_table.yaml
   - include:
       file: db/changelog/010_create_quiz_leaderboard_table.yaml
+  - include:
+      file: db/changelog/011_seed_data.yaml
